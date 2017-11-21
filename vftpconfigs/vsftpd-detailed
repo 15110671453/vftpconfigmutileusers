@@ -1,0 +1,22 @@
+[root@iZ2850357ruZ vsftpd]# ls -la
+total 84
+drwxr-xr-x   3 root root  4096 Nov 20 18:17 .
+drwxr-xr-x 155 root root 12288 Nov 20 18:08 ..
+-rw-r--r--   1 root root    19 Nov 20 17:18 chroot_list
+drwxr-xr-x   2 root root  4096 Nov 20 18:21 conf
+-rw-------   1 root root   125 Mar 31  2016 ftpusers
+-rw-------   1 root root   361 Mar 31  2016 user_list
+-rw-r--r--   1 root root 12288 Nov 20 17:48 vftpuserchenleifeng.db
+-rw-r--r--   1 root root 12288 Nov 20 17:47 vftpuserdyn.db
+-rw-------   1 root root  5322 Nov 20 17:50 vsftpd.conf
+-rwxr--r--   1 root root   338 Mar 31  2016 vsftpd_conf_migrate.sh
+-rw-------   1 root root  5030 Sep  7  2016 vsftpd.conf.origin
+lrwxrwxrwx   1 root root    96 Sep  7  2016 vsftpd.service -> /usr/lib/systemd/system/vsftpd.service/etc/systemd/system/multi-user.target.wants/vsftpd.service
+-rw-r--r--   1 root root    21 Nov 20 17:31 vsftpuserdyn.text
+-rw-r--r--   1 root root    33 Nov 20 17:31 vsftpuserleifeng.text
+[root@iZ2850357ruZ vsftpd]# 
+
+
+
+
+

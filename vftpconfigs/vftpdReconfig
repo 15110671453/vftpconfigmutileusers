@@ -1,0 +1,205 @@
+[root@iZ2850357ruZ vsftpd]# vi vsftpuserdyn.text 
+
+ftpdyn
+asd1453NMDftp
+
+
+[root@iZ2850357ruZ vsftpd]# vi vsftpuserleifeng.text 
+
+chenleifeng
+chenleifeng@12345678
+
+
+[root@iZ2850357ruZ vsftpd]# vi chroot_list 
+
+
+ftpdyn
+chenleifeng
+
+
+[root@iZ2850357ruZ vsftpd]# cd conf/
+[root@iZ2850357ruZ conf]# ls -la
+total 16
+drwxr-xr-x 2 root root 4096 Nov 20 20:36 .
+drwxr-xr-x 3 root root 4096 Nov 20 20:55 ..
+-rw-r--r-- 1 root root  248 Nov 20 20:36 chenleifeng.conf
+-rw-r--r-- 1 root root  241 Nov 20 20:35 ftpdyn.conf
+[root@iZ2850357ruZ conf]# 
+
+
+
+
+[root@iZ2850357ruZ conf]# vi chenleifeng.conf
+
+anonymous_enable=NO
+
+
+local_enable=YES
+
+anon_world_readable_only=NO
+write_enable=YES
+
+local_root=/usr/local/tomcat/chenleifeng
+
+anon_upload_enable=NO
+anon_mkdir_write_enable=NO
+anon_other_write_enable=NO
+
+
+anon_umask=022
+
+download_enable=YES
+
+
+
+
+[root@iZ2850357ruZ conf]# vi ftpdyn.conf 
+
+anonymous_enable=NO
+
+local_enable=YES
+
+anon_world_readable_only=NO
+write_enable=YES
+
+local_root=/usr/local/tomcat/dingyanan
+
+anon_upload_enable=NO
+anon_mkdir_write_enable=NO
+anon_other_write_enable=NO
+
+
+anon_umask=022
+
+download_enable=YES
+
+
+
+[root@iZ2850357ruZ vsftpd]# vi vsftpd.conf
+
+listen_ipv6=YES
+
+pam_service_name=vsftpd
+userlist_enable=YES
+userlist_deny=YES
+tcp_wrappers=YES
+userlist_file=/etc/vsftpd/user_list
+
+anon_root=/usr/local/tomcat
+virtual_use_local_privs=YES
+
+guest_enable=YES
+guest_username=vftpuser
+user_config_dir=/etc/vsftpd/conf
+
+chroot_list_enable=NO
+chroot_list_file=/etc/vsftpd/chroot_list
+chroot_local_user=YES
+allow_writeable_chroot=YES
+
+
+pasv_enable=YES
+pasv_min_port=1024
+pasv_max_port=1028
+
+
+[root@iZ2850357ruZ vsftpd]# vi user_list 
+
+
+
+
+# vsftpd userlist
+# If userlist_deny=NO, only allow users in this file
+# If userlist_deny=YES (default), never allow users in this file, and
+# do not even prompt for a password.
+# Note that the default vsftpd pam config also checks /etc/vsftpd/ftpusers
+# for users that are denied.
+root
+bin
+daemon
+adm
+lp
+sync
+shutdown
+halt
+mail
+news
+uucp
+operator
+games
+nobody
+
+
+
+
+
+
+[root@iZ2850357ruZ vsftpd]# vi allvftpusers.text
+[root@iZ2850357ruZ vsftpd]# rm vftpuserchenleifeng.db 
+rm: remove regular file ‘vftpuserchenleifeng.db’? y
+[root@iZ2850357ruZ vsftpd]# rm vftpuserdyn.db 
+rm: remove regular file ‘vftpuserdyn.db’? y
+[root@iZ2850357ruZ vsftpd]# ls -la
+total 68
+drwxr-xr-x   3 root root  4096 Nov 20 20:44 .
+drwxr-xr-x 155 root root 12288 Nov 20 18:08 ..
+-rw-r--r--   1 root root    55 Nov 20 20:44 allvftpusers.text
+-rw-r--r--   1 root root    19 Nov 20 17:18 chroot_list
+drwxr-xr-x   2 root root  4096 Nov 20 20:36 conf
+-rw-------   1 root root   125 Mar 31  2016 ftpusers
+-rw-------   1 root root   361 Mar 31  2016 user_list
+-rw-------   1 root root  5317 Nov 20 20:34 vsftpd.conf
+-rwxr--r--   1 root root   338 Mar 31  2016 vsftpd_conf_migrate.sh
+-rw-------   1 root root  5030 Sep  7  2016 vsftpd.conf.origin
+lrwxrwxrwx   1 root root    96 Sep  7  2016 vsftpd.service -> /usr/lib/systemd/system/vsftpd.service/etc/systemd/system/multi-user.target.wants/vsftpd.service
+-rw-r--r--   1 root root    21 Nov 20 17:31 vsftpuserdyn.text
+-rw-r--r--   1 root root    33 Nov 20 17:31 vsftpuserleifeng.text
+[root@iZ2850357ruZ vsftpd]# 
+[root@iZ2850357ruZ vsftpd]# db_load -T -t hash -f /etc/vsftpd/allvftpusers.text  /etc/vsftpd/allvftpusers.db
+[root@iZ2850357ruZ vsftpd]# 
+[root@iZ2850357ruZ vsftpd]# useradd -d /usr/local/tomcat -s /sbin/nologin ftpdyn
+useradd: user 'ftpdyn' already exists
+[root@iZ2850357ruZ vsftpd]# useradd -d /usr/local/tomcat -s /sbin/nologin chenleifeng
+useradd: user 'chenleifeng' already exists
+[root@iZ2850357ruZ vsftpd]# 
+
+
+
+
+
+
+
+
+
+[root@iZ2850357ruZ vsftpd]# vi /etc/pam.d/vsftpd 
+
+
+
+
+
+
+
+#%PAM-1.0
+session    optional     pam_keyinit.so    force revoke
+#auth       required    pam_listfile.so item=user sense=deny file=/etc/vsftpd/ftpusers onerr=succeed
+#auth       required    pam_shells.so
+#auth       include     password-auth
+#account    include     password-auth
+session    required     pam_loginuid.so
+session    include      password-auth
+auth required pam_userdb.so db=/etc/vsftpd/allvftpusers.db
+account required pam_userdb.so db=/etc/vsftpd/allvftpusers.db
+
+
+
+
+
+
+
+
+
+
+
+
+
+
