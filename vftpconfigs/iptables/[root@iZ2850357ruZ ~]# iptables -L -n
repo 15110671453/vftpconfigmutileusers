@@ -1,0 +1,28 @@
+[root@iZ2850357ruZ ~]# iptables -L -n
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:21
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:81
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:82
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:83
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpts:5900:5910
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3306
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            state RELATED,ESTABLISHED
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3690
+
+Chain FORWARD (policy DROP)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+
+防火墙快速添加端口
+iptables -A INPUT -p tcp --dport 8082 -j ACCEPT
+service iptables save  
+systemctl restart iptables.service 
+
+
